@@ -53,6 +53,8 @@ import PageHeader1 from "../components/common/PageHeader1";
 import Documentation from "./Documentation/Documentation";
 import Changelog from "./Changelog/Changelog";
 import Help from "./Dashboard/Help";
+import ManageRoles from "./User Management/ManageRoles";
+import ManageUsers from "./User Management/ManageUsers";
 
 function MainIndex(props) {
 
@@ -113,6 +115,8 @@ function MainIndex(props) {
                 <Route exact path={`${process.env.PUBLIC_URL}/documentation`} component={Documentation} />
                 <Route exact path={`${process.env.PUBLIC_URL}/changelog`} component={Changelog} />
                 <Route exact path={`${process.env.PUBLIC_URL}/help`} component={Help} />
+                <Route exact path={`${process.env.PUBLIC_URL}/manage-roles`} component={ManageRoles} />
+                <Route exact path={`${process.env.PUBLIC_URL}/manage-users`} component={ManageUsers} />
             </div>
         </div>
     )

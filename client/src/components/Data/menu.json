@@ -321,6 +321,37 @@
             ]
         },
         {
+            "name":"User Management",
+            "routerLink":[""],
+            "identifier":"User Management",
+            "iconClass":"icofont-user-male",
+            "breadcrumbMessage":"",
+            "isCategory":false,
+            "isApp":true,
+            "children":[
+                {
+                    "name":"Manage Roles",
+                    "routerLink":["manage-roles"],
+                    "identifier":"Manage Roles",
+                    "iconClass":"",
+                    "breadcrumbMessage":"",
+                    "isCategory":false,
+                    "isApp" : false,
+                    "children":[]
+                },
+                {
+                    "name":"Manage Users",
+                    "routerLink":["manage-users"],
+                    "identifier":"Manage Users",
+                    "iconClass":"",
+                    "breadcrumbMessage":"",
+                    "isCategory":false,
+                    "isApp" : false,
+                    "children":[]
+                }
+            ]
+        },
+        {
             "name": "Other Pages",
             "routerLink": [],
             "identifier": "Other Pages",
