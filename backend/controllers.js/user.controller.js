@@ -121,6 +121,7 @@ export const userUpdate = async(req, res)=>{
     }
 };
 
+/** User deletion */
 export const userDelete = async(req, res)=>{
     const userId = req.params.userID
     try{
