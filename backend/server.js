@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import morgan from 'morgan'
 import UserRouter from './routes/user.routes.js'
-import RoleRouter from './routes/role.routes.js'
+import RoleRouter from "./routes/role.routes.js"
 import connectDB from './config/db.js'
 
 
@@ -34,19 +34,20 @@ app.get("/", (req, res)=>{
 });
 
 /** CORS options */
-const option = cors({
+const option = {
     origin     : client_url,
     method     : ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     optionsSuccessStatus:200
-});
+};
 
 /** Initializing packages */
-app.use(cors(option))
-app.use(express.json())
-app.use(morgan("dev"))
+app.use(cors(option));
+app.use(express.json());
+app.use(morgan("dev"));
 
 /** Root level routes */
-app.use('/api/user', UserRouter)
-app.use('/api/role', RoleRouter)
+app.use('/api/user', UserRouter);
+app.use('/api/role', RoleRouter);
+
 

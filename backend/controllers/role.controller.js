@@ -1,15 +1,16 @@
-import ROLE from "../models/Role.model";
+import Role from "../models/role.model.js";
 
 /** Create new role */
 export const roleCreation = async(req, res)=>{
     try {
         const {role_name, permissions} = req.body
+        console.log("req.body: ", req.body)
         if(!role_name && permissions.length === 0){
             return res.status(400).json({status:false, message:"All fields are required"})
         }
 
         /** Creating new role */
-        const newRole   = new ROLE({
+        const newRole   = new Role({
             role_name   : role_name,
             permissions : permissions
         })
@@ -27,7 +28,7 @@ export const roleCreation = async(req, res)=>{
 export const rolesFetch = async (req, res) => {
     try {
         /** Fetch all roles of collection */
-        const roles = await ROLE.find();
+        const roles = await Role.find();
         return res.status(200).json({ status: true,message:"Roles fetched successfully", data: roles });
 
     } catch (error) {
@@ -41,7 +42,7 @@ export const roleFetchById = async (req, res) => {
     try {
         const roleId = req.params.roleID;
         /** Single role fetch by role id */
-        const role = await ROLE.findById(roleId);
+        const role = await Role.findById(roleId);
         if (!role) {
             return res.status(404).json({ status: false, message: "Role not found" });
         }
@@ -65,7 +66,7 @@ export const roleUpdate = async (req, res) => {
         }
 
         /** Updating existing role */
-        const updatedRole = await ROLE.findByIdAndUpdate(
+        const updatedRole = await Role.findByIdAndUpdate(
             roleId,
             { role_name, permissions },
             { new: true, runValidators: true }
@@ -88,12 +89,12 @@ export const roleDelete = async (req, res) => {
         const roleId = req.params.roleID;
 
         /** Deleting role by role id */
-        const deletedRole = await ROLE.findByIdAndDelete(roleId);
+        const deletedRole = await Role.findByIdAndDelete(roleId);
         if (!deletedRole) {
             return res.status(404).json({ status: false, message: "Role not found" });
         }
 
-        return res.status(200).json({ status: true, message: "Role deleted successfully" });
+        return res.status(200).json({ status: true, message: "Role deleted successfully", data:deletedRole });
 
     } catch (error) {
         console.log("Error during roleDelete", error);

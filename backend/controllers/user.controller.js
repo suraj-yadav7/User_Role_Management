@@ -1,20 +1,20 @@
 import bcrypt from "bcrypt";
 import jwt    from "jsonwebtoken";
-import USER   from "../models/user.model";
-import ROLE   from "../models/Role.model";
+import User   from "../models/user.model.js";
+import Role   from "../models/role.model.js";
 
 
 /** User Creation */
 export const userCreation = async(req, res)=>{
     try {
-        const {firstName, lastName, email, roles} = req.body
-        let user = await USER.findOne({email})
+        const {firstName, lastName, email, mobile, roles} = req.body
+        let user = await User.findOne({email})
         if(user){
             return res.status(400).json({statu:false, message:"User already exist with this mail"})
         }
 
         /** Checking provided roles are exist. */
-        const foundRoles = await ROLE.find({ _id: { $in: roles } });
+        const foundRoles = await Role.find({ _id: { $in: roles } });
         if (foundRoles.length !== roles.length) {
             return res.status(400).json({status: false, message:"One or more roles are invalid" });
         }
@@ -24,11 +24,12 @@ export const userCreation = async(req, res)=>{
         const hashedPass = await bcrypt.hash(req.body.password, salt);
 
         /* Create a new user */
-        const newUser  =  new USER({
+        const newUser  =  new User({
             first_name : firstName,
             last_name  : lastName,
             email      : email,
             password   : hashedPass,
+            mobile     : mobile,
             roles      : roles
             });
 
@@ -47,7 +48,7 @@ export const userLogin = async(req, res)=>{
     const jwtSecretStr    = process.env.JWT_SECRET
     let {email, password} = req.body
     try{
-        let userData = await USER.findOne({email})
+        let userData = await User.findOne({email})
         if(!userData){
             return res.status(400).json({status:false, message:"User Not Found"})
         }
@@ -76,9 +77,9 @@ export const userLogin = async(req, res)=>{
 export const userFetch = async(req, res)=>{
     try {
         const userId   = req.params.userID
-        const user     = await USER.findById(userId)
+        const user     = await User.findById(userId).populate('roles')
         if(!user){
-            return res.statu(404).json({status:false, message:"User Not Found"})
+            return res.status(404).json({status:false, message:"User Not Found"})
         }
         return res.status(200).json({status:true, message:"User found successfully", data:user})
 
@@ -90,17 +91,19 @@ export const userFetch = async(req, res)=>{
 
 /** User Details Update */
 export const userUpdate = async(req, res)=>{
-    const userId = req.params.userID
+    const userId = req.params.userID;
+    console.log("update: ", userId)
     try {
-        const {firstName, lastName, email, roles} = req.body
-        const user = await USER.findById(userId)
+        const {firstName, lastName, email, mobile, roles} = req.body
+        const user = await User.findById(userId)
         if(!user){
             return res.status(404).json({status:true, message:"User Not Found"})
         }
 
         /** Roles validating and updating */
+        console.log("roles: ", roles)
         if(roles && roles.length>0){
-            const foundRoles = await ROLE.find({_id : {$in:roles}})
+            const foundRoles = await Role.find({_id : {$in:roles}})
             if(foundRoles.length !== roles.length){
                 return res.status(400).json({status:false, message:"One or more roles are not valid"})
             }
@@ -110,10 +113,11 @@ export const userUpdate = async(req, res)=>{
         if(firstName) user.first_name = firstName
         if(lastName)  user.last_name  = lastName
         if(email)     user.email      = email
+        if(mobile)    user.mobile     = mobile
 
         /** Save the user information */
         const updatedUser = await user.save()
-        return res.statu(200).json({status:true, message: "User Details Updated Successfully"})
+        return res.status(200).json({status:true, message: "User Details Updated Successfully", data:updatedUser})
 
     }catch (error) {
         console.log("Error during userUpdation :: ", error)
@@ -125,12 +129,12 @@ export const userUpdate = async(req, res)=>{
 export const userDelete = async(req, res)=>{
     const userId = req.params.userID
     try{
-        const user = await USER.findByIdAndDelete(userId)
+        const user = await User.findByIdAndDelete(userId)
         if(!user){
             return res.status(404).json({status:true, message:"User Not Found"})
         }
 
-        return res.statu(200).json({status:true, message: "User Deleted Successfully"})
+        return res.status(200).json({status:true, message: "User Deleted Successfully", data:user})
 
     }catch(error){
         console.log("Error during userdeletion :: ", error)
