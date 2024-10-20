@@ -3,7 +3,7 @@ import { roleCreation, roleDelete, roleFetchById, rolesFetch, roleUpdate } from 
 
 const RoleRouter = express.Router()
 
-RoleRouter.post('/creation',          roleCreation)
+RoleRouter.post('/create',            roleCreation)
 RoleRouter.get('/fetch',              rolesFetch)
 RoleRouter.get('/fetch/:roleID',      roleFetchById)
 RoleRouter.put('/update/:roleID',     roleUpdate)

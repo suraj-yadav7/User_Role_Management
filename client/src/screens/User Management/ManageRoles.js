@@ -26,7 +26,7 @@ const ManageRoles = () => {
   /** Server base url */
   const base_url = "http://localhost:5000"
 
-  /** handling selection options */
+  /** Handling selection options */
   const handleChange = (event) => {
       const { value } = event.target;
       setSelectedOptions(prevSelected =>
@@ -42,20 +42,21 @@ const ManageRoles = () => {
     createRole()
   };
 
-  /** function create role */
+  /** Function create role */
   const createRole=async()=>{
     try{
-      const response = await axios.post(`${base_url}/api/role/creation`, {
-        role_name:roleName,
-        permissions:selectedOptions
+      const response = await axios.post(`${base_url}/api/role/create`, {
+        role_name   : roleName,
+        permissions : selectedOptions
       })
-      console.log("response: ", response)
-      if(response.data?.status === true) setMessage(response.data.message)
+      if(response.data?.status === true){
+        setMessage(response.data.message)
         setTimeout(()=>{
             setSelectedOptions([])
             setRoleName("")
             setMessage("")
           },1000)
+        }
     }catch(err){
       console.log("Error Occur while creating role: ", err)
       setMessage(err.response?.data.message)
@@ -65,14 +66,13 @@ const ManageRoles = () => {
     }
   }
 
-  /** initial top 5 roles fetch */
+  /** Initial top 5 roles fetch */
   const getRoles = async()=>{
     try{
       let response = await axios.get(`${base_url}/api/role/fetch`)
-      console.log("useEffect: ", response)
       if(response.data.status === true) setRoleData(response.data.data.slice(0,5))
     }catch(err){
-      console.log("Error Occur while creating role: ", err)
+      console.log("Error Occur while role fetching: ", err)
     }
   }
 
@@ -84,7 +84,7 @@ const ManageRoles = () => {
     <>
       <div>
         {
-          message && <h3>{message}</h3>
+          message && <h3 className='py-2'>{message}</h3>
         }
         <h4>Create New Role</h4>
         <form onSubmit={handleSubmit}>
@@ -113,7 +113,7 @@ const ManageRoles = () => {
         {
           roleData && roleData.length>0 ?
           <div className="container py-4">
-            <h3>Top 5 Roles List</h3>
+            <h3>Top 5 Roles</h3>
             <ul className="list-group">
                 {roleData.map(role => (
                   <li key={role._id} className="list-group-item">

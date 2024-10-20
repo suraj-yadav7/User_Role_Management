@@ -7,7 +7,7 @@ import Role   from "../models/role.model.js";
 /** User Creation */
 export const userCreation = async(req, res)=>{
     try {
-        const {firstName, lastName, email, mobile, roles} = req.body;
+        const {firstName, lastName, email, mobile, roles, password} = req.body;
         let user = await User.findOne({email})
         if(user){
             return res.status(400).json({statu:false, message:"User already exist with this mail"})
@@ -21,7 +21,7 @@ export const userCreation = async(req, res)=>{
 
         /* Salting and Hashing the Password */
         const salt       = await bcrypt.genSalt(10);
-        const hashedPass = await bcrypt.hash(req.body.password, salt);
+        const hashedPass = await bcrypt.hash(password, salt);
 
         /* Create a new user */
         const newUser  =  new User({
@@ -35,7 +35,7 @@ export const userCreation = async(req, res)=>{
 
         /* Save User and Return */
         const userCreated = await newUser.save();
-        return res.status(200).json({status:true, message:"user created successfully", userdata:userCreated});
+        return res.status(200).json({status:true, message:"User created successfully", userdata:userCreated});
 
     }catch (error) {
         console.log("Error while creating user :: ", error)

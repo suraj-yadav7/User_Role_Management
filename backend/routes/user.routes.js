@@ -4,7 +4,7 @@ import { userCreation, userDelete, userFetch, userLogin, userUpdate } from '../c
 
 const UserRouter = express.Router()
 
-UserRouter.post('/creation',           userCreation)
+UserRouter.post('/create',           userCreation)
 UserRouter.post('/login',              userLogin)
 UserRouter.get('/fetch/:userID',       userFetch)
 UserRouter.put('/update/:userID',      userUpdate)
