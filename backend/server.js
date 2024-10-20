@@ -49,5 +49,3 @@ app.use(morgan("dev"));
 /** Root level routes */
 app.use('/api/user', UserRouter);
 app.use('/api/role', RoleRouter);
-
-

@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const RoleSchema = new mongoose.Schema({
     role_name:{
         type:String,
-        enum:["admin", "project_manager", "hr_Manager", "finance_manager", "employee"],
         required:true,
     },
     permissions:{

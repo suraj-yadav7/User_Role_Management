@@ -4,7 +4,6 @@ import Role from "../models/role.model.js";
 export const roleCreation = async(req, res)=>{
     try {
         const {role_name, permissions} = req.body
-        console.log("req.body: ", req.body)
         if(!role_name && permissions.length === 0){
             return res.status(400).json({status:false, message:"All fields are required"})
         }

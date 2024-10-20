@@ -7,7 +7,7 @@ import Role   from "../models/role.model.js";
 /** User Creation */
 export const userCreation = async(req, res)=>{
     try {
-        const {firstName, lastName, email, mobile, roles} = req.body
+        const {firstName, lastName, email, mobile, roles} = req.body;
         let user = await User.findOne({email})
         if(user){
             return res.status(400).json({statu:false, message:"User already exist with this mail"})
