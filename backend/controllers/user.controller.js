@@ -3,6 +3,8 @@ import jwt    from "jsonwebtoken";
 import User   from "../models/user.model.js";
 import Role   from "../models/role.model.js";
 
+/* #################################################################################################################### */
+/* #################################################################################################################### */
 
 /** User Creation */
 export const userCreation = async(req, res)=>{
@@ -43,6 +45,9 @@ export const userCreation = async(req, res)=>{
     }
 };
 
+/* #################################################################################################################### */
+/* #################################################################################################################### */
+
 /** User Login */
 export const userLogin = async(req, res)=>{
     const jwtSecretStr    = process.env.JWT_SECRET
@@ -65,13 +70,16 @@ export const userLogin = async(req, res)=>{
                 id:userData.id,
                 }}
         const JWTToken=  jwt.sign(data,jwtSecretStr)
-        return res.status(200).json({status:true, message:"User found", jwtToken:JWTToken, userid:userData._id})
+        return res.status(200).json({status:true, message:"User found", jwtToken:JWTToken, data:{id:userData._id, name:userData.first_name, roles:userData.roles}})
 
     }
     catch(err){
         console.log("error while login user :: ", err);
     }
 };
+
+/* #################################################################################################################### */
+/* #################################################################################################################### */
 
 /** User Details fetch */
 export const userFetch = async(req, res)=>{
@@ -88,6 +96,9 @@ export const userFetch = async(req, res)=>{
         return res.status(500).json({status:false, message:"Internal Server Error"})
     }
 };
+
+/* #################################################################################################################### */
+/* #################################################################################################################### */
 
 /** User Details Update */
 export const userUpdate = async(req, res)=>{
@@ -124,6 +135,9 @@ export const userUpdate = async(req, res)=>{
         return res.status(500).json({status:false, message:"Internal Server Error"})
     }
 };
+
+/* #################################################################################################################### */
+/* #################################################################################################################### */
 
 /** User deletion */
 export const userDelete = async(req, res)=>{
