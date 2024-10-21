@@ -15,6 +15,7 @@ function App(props) {
     const activeKey1 = res;
     return activeKey1
   }
+  console.log("props: ", props)
 
   if (activekey() === "/sign-in" || activekey() === "/sign-up" || activekey() === "/password-reset" || activekey() === "/2-step-authentication" || activekey() === "/page-404") {
     return (

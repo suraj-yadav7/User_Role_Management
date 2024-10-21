@@ -51,7 +51,7 @@ export const userCreation = async(req, res)=>{
 /** User Login */
 export const userLogin = async(req, res)=>{
     const jwtSecretStr    = process.env.JWT_SECRET
-    let {email, password} = req.body
+    let {email, password} = req.body;
     try{
         let userData = await User.findOne({email})
         if(!userData){

@@ -16,7 +16,6 @@ function SignIn (){
 
     const handleChange=(e)=>{
         const {value, name} = e.target
-        console.log("running:")
         setLoginData({...loginData, [name]:value})
     };
 
@@ -48,7 +47,6 @@ function SignIn (){
         }
     };
 
-    console.log("login data: ", loginData)
         return(
             <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
                 <div className="w-100 p-3 p-md-5 card border-0 bg-dark text-light" style={{maxWidth: "32rem"}}>

@@ -7,7 +7,7 @@ const RoleSchema = new mongoose.Schema({
     },
     permissions:{
         type:[String],
-        enum:["projects", "tickets", "our_client", "employees", "accounts", "payroll", "app", "other_pages", "ui_components"],
+        enum:["dashboard","projects", "tickets", "our clients", "employees", "accounts", "payroll", "app", "user management", "other pages", "ui components"],
         required:true
     }
 },{timestamps:true})

@@ -12,16 +12,17 @@ const ManageRoles = () => {
 
   /** All permission options from sidebar of menu */
   const options = [
-    "projects",
-    "tickets",
-    "our_client",
-    "employees",
-    "accounts",
-    "payroll",
-    "app",
-    "other_pages",
-    "ui_components"
-  ];
+        "dashboard",
+        "projects",
+        "tickets",
+        "our clients",
+        "employees",
+        "accounts",
+        "payroll",
+        "app",
+        "user management",
+        "other pages",
+        "ui components"]
 
   /** Server base url */
   const base_url = "http://localhost:5000"
@@ -64,7 +65,7 @@ const ManageRoles = () => {
         setMessage("")
       },1500)
     }
-  }
+  };
 
   /** Initial top 5 roles fetch */
   const getRoles = async()=>{

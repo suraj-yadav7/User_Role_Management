@@ -4,17 +4,61 @@ import menu  from "../Data/menu.json";
 import menu2 from "../Data/menu2.json";
 import { useState } from "react";
 import { useEffect } from "react";
+import axios from "axios";
 console.log("menu",menu);
 function Sidebar(props) {
 
     const [isSidebarMini, setIsSidebarMini] = useState(false);
-    const [menuData, setMenuData] = useState([...menu?.menu]);
+    const [menuData, setMenuData]           = useState([...menu?.menu]);
     const [darkLightMode, setDarkLightMode] = useState("light");
-    const [updateRtl, setUpdateRtl] = useState(false);
+    const [updateRtl, setUpdateRtl]         = useState(false);
+
+    const base_url = "http://localhost:5000"
+
+    /** Initializing unqiue persmission of user */
+    const userPermissions = new Set();
+
+    let rolesId = [];
+
+    /** Local storage roles id access */
+    try {
+        const storedRoles = localStorage.getItem("roles");
+        if (storedRoles) {
+            rolesId = storedRoles.split(',').map((id)=> id.trim())
+        }
+    } catch (error) {
+        console.error("Error parsing roles from localStorage:", error);
+        rolesId = [];
+    }
+
+    /** Fetching all permission assigned to user by role's id */
+    const getPermissions=async(roleId)=>{
+        let response = await axios.get(`${base_url}/api/role/fetch/${roleId}`)
+        if(response.data.status === true){
+            response.data.data.permissions.forEach(permissions => {
+                userPermissions.add(permissions)
+            })
+        }
+    }
+
+    /** promise handling for above function */
+    const fetchAllPermissions = async()=>{
+        await Promise.all(rolesId.map(roleid=> getPermissions(roleid)))
+    }
+
+    /** Filtering menuData based on persmission set */
+    const filterMenuData = async()=>{
+        await fetchAllPermissions();
+        const filteredMenu = menu?.menu.filter(item =>{
+            return userPermissions.has(item.name.toLowerCase())
+        })
+        console.log("filter menuData: ", filteredMenu)
+        setMenuData(filteredMenu)
+    }
     
     useEffect(() => {
         window.document.children[0].setAttribute("data-theme", "light");
-
+        filterMenuData()
     }, []);
 
     function openChildren(id) {
@@ -112,7 +156,7 @@ function Sidebar(props) {
                     <span className="logo-text">My-Task</span>
                 </a>
                 <ul className="menu-list flex-grow-1 mt-3">
-                    {
+                    {  
                         menuData.map((d, i) => {
                             if (d.isToggled) {
                                 return <li key={"shsdg" + i}>
@@ -162,6 +206,7 @@ function Sidebar(props) {
 
                             </li>
                         })
+                        
                     }
 
 
